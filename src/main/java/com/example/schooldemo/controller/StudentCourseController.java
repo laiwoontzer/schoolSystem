@@ -46,7 +46,6 @@ public class StudentCourseController {
         if (studentId.isEmpty()) {
             throw new SchoolException(SchoolStatusCode.StudentNotFound);
         }
-
         return studentId;
     }
 

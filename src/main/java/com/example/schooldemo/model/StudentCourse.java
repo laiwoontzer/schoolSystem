@@ -11,6 +11,7 @@ import java.io.Serializable;
 @IdClass(StudentCourseId.class)
 public class StudentCourse implements Serializable {
 
+    // because composite id,compound id, primary key //@IdClass(StudentCourseId.class)
     @Id
     private String studentId;
     @Id
