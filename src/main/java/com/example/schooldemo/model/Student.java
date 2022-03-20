@@ -1,6 +1,6 @@
 package com.example.schooldemo.model;
+
 import com.example.schooldemo.io.StudentInput;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Student {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO,generator="UUID")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "student_id", unique = true, nullable = false, length = 40)
     private String studentId;
@@ -39,23 +39,23 @@ public class Student {
         this.studentName = student.getStudentName();
         this.gender = student.getGender();
         this.active = student.isActive();
-        this.createdTimestamp  = LocalDateTime.now();
+        this.createdTimestamp = LocalDateTime.now();
     }
 
-    public Student (StudentInput studentInput){
+    public Student(StudentInput studentInput) {
         this.studentName = studentInput.getStudentName();
         this.gender = studentInput.getGender();
         this.active = studentInput.isActive();
-        this.createdTimestamp  = LocalDateTime.now();
+        this.createdTimestamp = LocalDateTime.now();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Student) {
             Student student = (Student) obj;
-        return this.studentName.equals(student.studentName) &&
-                this.gender.equals(student.gender) &&
-                this.active == student.active;
+            return this.studentName.equals(student.studentName) &&
+                    this.gender.equals(student.gender) &&
+                    this.active == student.active;
         }
         return false;
     }

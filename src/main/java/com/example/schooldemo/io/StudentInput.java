@@ -32,6 +32,6 @@ public class StudentInput {
     }
 
     public void setActive(boolean active) {
-        this.active =  Boolean.FALSE == active ? false: true;
+        this.active = Boolean.FALSE == active ? false : true;
     }
 }

@@ -1,8 +1,6 @@
 package com.example.schooldemo.model;
 
 import com.example.schooldemo.io.CourseInput;
-import com.example.schooldemo.io.StudentInput;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO,generator="UUID")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "course_id", unique = true, nullable = false, length = 40)
     private String courseId;
@@ -39,10 +37,10 @@ public class Course {
         this.createdTimestamp = course.getCreatedTimestamp();
     }
 
-    public Course (CourseInput courseInput){
+    public Course(CourseInput courseInput) {
         this.courseName = courseInput.getCourseName();
         this.active = courseInput.isActive();
-        this.createdTimestamp  = LocalDateTime.now();
+        this.createdTimestamp = LocalDateTime.now();
     }
 
 

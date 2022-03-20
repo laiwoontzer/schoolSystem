@@ -13,6 +13,6 @@ public class SchoolExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler()
     protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
-        return handleExceptionInternal(ex, new SchoolResponse(ex.getMessage()), new HttpHeaders(),((SchoolException) ex).getErrorCode(), request);
+        return handleExceptionInternal(ex, new SchoolResponse(ex.getMessage()), new HttpHeaders(), ((SchoolException) ex).getErrorCode(), request);
     }
 }

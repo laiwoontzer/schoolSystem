@@ -1,13 +1,13 @@
 package com.example.schooldemo.controller;
 
-import com.example.schooldemo.io.CourseInput;
-import com.example.schooldemo.io.StudentInput;
-import com.example.schooldemo.model.Course;
-import com.example.schooldemo.response.SchoolStatusCode;
 import com.example.schooldemo.exception.SchoolException;
-import com.example.schooldemo.response.SchoolResponse;
+import com.example.schooldemo.io.StudentInput;
 import com.example.schooldemo.model.Student;
+import com.example.schooldemo.model.StudentCourse;
+import com.example.schooldemo.repository.StudentCourseRepository;
 import com.example.schooldemo.repository.StudentRepository;
+import com.example.schooldemo.response.SchoolResponse;
+import com.example.schooldemo.response.SchoolStatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +21,11 @@ public class StudentController {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private StudentCourseRepository studentCourseRepository;
+
     @GetMapping(path = "", produces = "application/json")
-    public List<Student> getStudents(){
+    public List<Student> getStudents() {
         List<Student> listStudent = studentRepository.findAll();
         return listStudent;
     }
@@ -39,14 +42,13 @@ public class StudentController {
     @PutMapping(path = "/{id}", produces = "application/json")
     public Student updateStudent(@PathVariable String id, @RequestBody StudentInput student) {
         Optional<Student> oldStudentData = studentRepository.findById(id);
-        if(oldStudentData.isEmpty()){
+        if (oldStudentData.isEmpty()) {
             throw new SchoolException(SchoolStatusCode.StudentNotFound);
         }
 
         Student newStudent = new Student(student);
         newStudent.setStudentId(id);
-        if( oldStudentData.get().equals(newStudent))
-        {
+        if (oldStudentData.get().equals(newStudent)) {
             throw new SchoolException(SchoolStatusCode.StudentNotModified);
         }
 
@@ -55,18 +57,22 @@ public class StudentController {
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public SchoolResponse deleteStudent(@PathVariable String id) {
-        Optional<Student> oldStudentData = studentRepository.findById(id);
-        if(oldStudentData.isEmpty()){
+        Optional<Student> student = studentRepository.findById(id);
+        List<StudentCourse> studentCourses = studentCourseRepository.findStudentCourseByStudentId(id);
+
+        if (student.isEmpty() || studentCourses == null) {
             throw new SchoolException(SchoolStatusCode.StudentNotFound);
         }
-        studentRepository.delete(oldStudentData.get());
+
+        studentCourseRepository.deleteAll(studentCourses);
+        studentRepository.delete(student.get());
 
         return new SchoolResponse(SchoolStatusCode.StudentSuccessDeleted);
     }
 
     @PostMapping(path = "", produces = "application/json")
     public Student createStudent(@RequestBody StudentInput student) {
-       return studentRepository.save(new Student(student));
+        return studentRepository.save(new Student(student));
     }
 
     @PutMapping(path = "deactivate/{id}", produces = "application/json")

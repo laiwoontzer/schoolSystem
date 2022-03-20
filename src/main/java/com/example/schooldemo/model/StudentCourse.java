@@ -27,7 +27,7 @@ public class StudentCourse implements Serializable {
 
 
     public String getStudentId() {
-        return  this.studentId;
+        return this.studentId;
     }
 
     public void setStudentId(String studentId) {
