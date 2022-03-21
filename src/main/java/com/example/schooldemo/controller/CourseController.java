@@ -9,6 +9,7 @@ import com.example.schooldemo.repository.StudentCourseRepository;
 import com.example.schooldemo.response.SchoolResponse;
 import com.example.schooldemo.response.SchoolStatusCode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class CourseController {
     public Course createCourse(@RequestBody CourseInput courseInput) {
         try {
             return courseRepository.save(new Course(courseInput));
-        } catch (Exception ex) {
+        } catch (DataIntegrityViolationException ex) {
             throw new SchoolException(SchoolStatusCode.ExistingCourse);
         }
     }
@@ -35,6 +36,9 @@ public class CourseController {
     @GetMapping(path = "", produces = "application/json")
     public List<Course> getCourse() {
         List<Course> listCourse = courseRepository.findAll();
+        if(listCourse.isEmpty()){
+            throw new SchoolException(SchoolStatusCode.CourseNotFound);
+        }
         return listCourse;
     }
 
